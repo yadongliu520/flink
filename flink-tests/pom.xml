@@ -19,14 +19,14 @@ under the License.
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<groupId>org.apache.flink</groupId>
 		<artifactId>flink-parent</artifactId>
-		<version>1.12-SNAPSHOT</version>
+		<version>1.12.0</version>
 		<relativePath>..</relativePath>
 	</parent>
 
@@ -36,7 +36,7 @@ under the License.
 	<packaging>jar</packaging>
 
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-core</artifactId>
@@ -63,7 +63,7 @@ under the License.
 			<artifactId>flink-shaded-jackson</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.hadoop</groupId>
 			<artifactId>hadoop-common</artifactId>
@@ -84,7 +84,7 @@ under the License.
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-runtime_${scala.binary.version}</artifactId>
@@ -113,7 +113,7 @@ under the License.
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-java</artifactId>
@@ -147,7 +147,7 @@ under the License.
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-examples-batch_${scala.binary.version}</artifactId>
@@ -211,7 +211,7 @@ under the License.
 			<artifactId>scalatest_${scala.binary.version}</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
@@ -247,6 +247,36 @@ under the License.
 
 	<build>
 		<plugins>
+
+			<plugin> <!--Java Scala混合编程解决找不到程序包问题-->
+				<groupId>org.scala-tools</groupId>
+				<artifactId>maven-scala-plugin</artifactId>
+				<version>2.15.2</version>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<phase>compile</phase>
+					</execution>
+					<execution>
+						<id>test-compile</id>
+						<goals>
+							<goal>testCompile</goal>
+						</goals>
+						<phase>test-compile</phase>
+					</execution>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin> <!--Java Scala混合编程解决找不到程序包问题-->
+
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
@@ -277,7 +307,7 @@ under the License.
 							<goal>compile</goal>
 						</goals>
 					</execution>
- 
+
 					<!-- Run scala compiler in the process-test-resources phase, so that dependencies on
 						 scala classes can be resolved later in the (Java) test-compile phase -->
 					<execution>
@@ -295,12 +325,12 @@ under the License.
 					</jvmArgs>
 				</configuration>
 			</plugin>
-			
+
 			<!-- Eclipse Integration -->
-			<plugin>
+			<!--plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.8</version>
+				<version>2.11</version>
 				<configuration>
 					<downloadSources>true</downloadSources>
 					<projectnatures>
@@ -323,7 +353,7 @@ under the License.
 						<sourceInclude>**/*.java</sourceInclude>
 					</sourceIncludes>
 				</configuration>
-			</plugin>
+			</plugin-->
 
 			<!-- Adding scala source directories to build path -->
 			<plugin>
@@ -360,14 +390,14 @@ under the License.
 			</plugin>
 
 			<!-- Scala Code Style, most of the configuration done via plugin management -->
-			<plugin>
+			<!--plugin>
 				<groupId>org.scalastyle</groupId>
 				<artifactId>scalastyle-maven-plugin</artifactId>
 				<configuration>
 					<configLocation>${project.basedir}/../tools/maven/scalastyle-config.xml</configLocation>
 				</configuration>
-			</plugin>
-		
+			</plugin-->
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -379,7 +409,7 @@ under the License.
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -409,7 +439,7 @@ under the License.
 
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.4</version><!--$NO-MVN-MAN-VER$-->
+				<version>2.4.1</version><!--$NO-MVN-MAN-VER$-->
 				<executions>
 
 					<execution>
