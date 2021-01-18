@@ -50,7 +50,7 @@ public class SocketWindowWordCount {
         try {
             final ParameterTool params = ParameterTool.fromArgs(args);
             hostname = params.has("hostname") ? params.get("hostname") : "localhost";
-            port = params.getInt("port");
+            port = params.has("port") ? params.getInt("port") : 12345; //修复获取默认端口缺失。需要在本地执行nc -l 12345（mac系统）
         } catch (Exception e) {
             System.err.println(
                     "No port specified. Please run 'SocketWindowWordCount "
