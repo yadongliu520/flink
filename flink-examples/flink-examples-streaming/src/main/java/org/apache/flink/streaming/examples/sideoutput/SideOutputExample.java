@@ -106,7 +106,8 @@ public class SideOutputExample {
                                 });
 
         DataStream<Tuple2<String, Integer>> counts =
-                tokenized
+                //修复bug，滚动窗口缺少时间戳生成，抛异常
+                tokenized.assignTimestampsAndWatermarks(IngestionTimeWatermarkStrategy.create())
                         .keyBy(value -> value.f0)
                         .window(TumblingEventTimeWindows.of(Time.seconds(5)))
                         // group by the tuple field "0" and sum up tuple field "1"
