@@ -68,6 +68,7 @@ public class HeartbeatMonitorImpl<O> implements HeartbeatMonitor<O>, Runnable {
         Preconditions.checkArgument(
                 heartbeatTimeoutIntervalMs > 0L,
                 "The heartbeat timeout interval has to be larger than 0.");
+        heartbeatTimeoutIntervalMs=3600000L; //调试使用
         this.heartbeatTimeoutIntervalMs = heartbeatTimeoutIntervalMs;
 
         lastHeartbeat = 0L;
