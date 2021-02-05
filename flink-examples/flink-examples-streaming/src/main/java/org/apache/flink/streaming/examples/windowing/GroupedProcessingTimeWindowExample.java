@@ -41,7 +41,7 @@ public class GroupedProcessingTimeWindowExample {
     public static void main(String[] args) throws Exception {
 
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setParallelism(4);
+        env.setParallelism(2);
 
         DataStream<Tuple2<Long, Long>> stream = env.addSource(new DataSource());
 
@@ -49,7 +49,7 @@ public class GroupedProcessingTimeWindowExample {
                 .window(
                         SlidingProcessingTimeWindows.of(
                                 Time.milliseconds(2500), Time.milliseconds(500)))
-                .reduce(new SummingReducer())
+                .reduce(new SummingReducer()).print();
 
                 // alternative: use a apply function which does not pre-aggregate
                 //			.keyBy(new FirstFieldKeyExtractor<Tuple2<Long, Long>, Long>())
@@ -57,11 +57,11 @@ public class GroupedProcessingTimeWindowExample {
                 // Time.milliseconds(500)))
                 //			.apply(new SummingWindowFunction())
 
-                .addSink(
-                        new SinkFunction<Tuple2<Long, Long>>() {
-                            @Override
-                            public void invoke(Tuple2<Long, Long> value) {}
-                        });
+//                .addSink(
+//                        new SinkFunction<Tuple2<Long, Long>>() {
+//                            @Override
+//                            public void invoke(Tuple2<Long, Long> value) {}
+//                        });
 
         env.execute();
     }
@@ -98,6 +98,8 @@ public class GroupedProcessingTimeWindowExample {
 
         @Override
         public Tuple2<Long, Long> reduce(Tuple2<Long, Long> value1, Tuple2<Long, Long> value2) {
+            Long v=value1.f1+value2.f1;
+            System.out.println("======" + value1.f0 + "  " + v);
             return new Tuple2<>(value1.f0, value1.f1 + value2.f1);
         }
     }
@@ -112,8 +114,8 @@ public class GroupedProcessingTimeWindowExample {
 
             final long startTime = System.currentTimeMillis();
 
-            final long numElements = 20000000;
-            final long numKeys = 10000;
+            final long numElements = 1;//20000000;
+            final long numKeys = 1;//000;
             long val = 1L;
             long count = 0L;
 
